@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200&family=Montserrat&family=Open+Sans:wght@500;600&display=swap" rel="stylesheet">   
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Elenco di letture</title>
+    <META NAME="robots" CONTENT="noindex,nofollow">
+</head>
+<body>
+    <div class="container">
+        <div class="row menu-cont">
+          <div class="col-9">
+          </div>
+          <div class="col-3 dropdown">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <circle cx="8" cy="8" r="8"/>
+                    </svg> 
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="index.html">Home</a></li>
+                        <li><a class="dropdown-item" href="letture.html">Letture</a></li>
+                        <li><a class="dropdown-item" href="scritture.html">Scritture</a></li>
+                        <li><a class="dropdown-item" href="dharma.html">Dharma</a></li>
+                        <li><a class="dropdown-item" href="essere.html">Chi siamo</a></li>
+                    </ul>     
+        </div>
+        </div>
+        <div id="myData"></div>
+            <script>
+                fetch('all_quotes.json')
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        appendData(data);
+                    })
+                    .catch(function (err) {
+                        console.log('error: ' + err);
+                    });
+                function appendData(data) {
+                    const mainContainer = document.getElementById('myData');
+                    mainContainer.className = 'container-fluid col-md-8'
+                    const books = Object.keys(data)
+                    for (const book of books) {
+                        const div = document.createElement("details");
+                        const book_button = document.createElement("summary")
+                        const div_list = document.createElement("div");
+                        const quotes_list = document.createElement('ul');
+                        quotes_list.className = 'list-group'
+                        const quotes = data[book]['quotes']
+                        for (const quote of quotes) {
+                            const listItem = document.createElement('li');
+                            listItem.className = 'list-group-item'
+                            listItem.textContent = quote
+                            quotes_list.appendChild(listItem)
+                        }
+                        book_button.textContent = data[book]['title'] + ' ' + data[book]['author']
+                        mainContainer.appendChild(div);
+                        div.appendChild(book_button);
+                        div.appendChild(div_list)
+                        div_list.appendChild(quotes_list)
+                    }   
+                    }
+            </script>  
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>  
+    
+</body>
+</html>
